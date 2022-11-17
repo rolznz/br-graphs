@@ -12,7 +12,7 @@ import {
 import { Line } from "react-chartjs-2";
 Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title);
 
-export function ExampleGraph() {
+export function ExampleLineChart() {
   const userDates = ["10/11", "11/11"];
   const datasetData = [5, 10];
 
