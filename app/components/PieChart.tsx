@@ -12,11 +12,11 @@ import { Pie } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
-type PurchasesBreakdownProps = {
+type PieChartProps = {
   data: ChartData<"pie">;
   options: ChartOptions<"pie">;
 };
 
-export function WalletsBreakdown({ data, options }: PurchasesBreakdownProps) {
+export function PieChart({ data, options }: PieChartProps) {
   return <Pie data={data} options={options} />;
 }

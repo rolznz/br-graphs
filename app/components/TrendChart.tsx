@@ -12,11 +12,11 @@ import {
 import { Line } from "react-chartjs-2";
 Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title);
 
-type WalletTrendsProps = {
+type LineChartProps = {
   data: ChartData<"line">;
   options: ChartOptions<"line">;
 };
 
-export function WalletTrends({ data, options }: WalletTrendsProps) {
+export function LineChart({ data, options }: LineChartProps) {
   return <Line data={data} options={options} />;
 }
