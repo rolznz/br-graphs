@@ -1,5 +1,5 @@
+import { LineChart } from "app/components/LineChart";
 import { PieChart } from "app/components/PieChart";
-import { LineChart } from "app/components/TrendChart";
 import { graphsData } from "lib/graphsData";
 
 export function Graphs() {
