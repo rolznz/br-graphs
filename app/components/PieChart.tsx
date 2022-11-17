@@ -8,11 +8,10 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels";
 import React from "react";
 import { Pie } from "react-chartjs-2";
 
-ChartJS.register(ArcElement, Tooltip, Legend, Title, ChartDataLabels);
+ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 type PieChartProps = {
   data: ChartData<"pie">;
@@ -21,11 +20,6 @@ type PieChartProps = {
 };
 
 const formatPercentPlugins: ChartOptions<"pie">["plugins"] = {
-  datalabels: {
-    formatter: function (value: string) {
-      return value + "%";
-    },
-  },
   tooltip: {
     callbacks: {
       label: (tooltipItem) => tooltipItem.raw + "%",

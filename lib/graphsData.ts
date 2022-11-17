@@ -27,7 +27,7 @@ console.log("Loaded unique wallets", getTimeElapsed());
 
 const uniquePaymentMethods = Array.from(new Set(paymentMethods));
 
-const getDateLabel = (date: Date) => format(date, "d/M/yy");
+const getDateLabel = (date: Date) => format(date, "d/M");
 
 const purchaseDates = Array.from(
   new Set(
