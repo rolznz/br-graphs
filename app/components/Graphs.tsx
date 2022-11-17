@@ -28,6 +28,7 @@ export function Graphs() {
           <PieChart
             data={graphsData.zeroConfBreakdownData}
             options={graphsData.zeroConfBreakdownOptions}
+            formatPercent
           />
         </div>
       </div>
