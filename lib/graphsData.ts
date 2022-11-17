@@ -7,17 +7,20 @@ import { Purchase } from "models/Purchase";
 
 const UNKNOWN_WALLET = "Unknown";
 
+const startTime = Date.now();
+const getTimeElapsed = () => (Date.now() - startTime) / 1000 + "s";
+
 const sampleData =
   process.env.USE_FULL_SAMPLE === "true" ? SampleDataFull : SampleDataSmall;
 const purchases = sampleData.rows as Purchase[];
-console.log("Sample size: " + purchases.length);
+console.log("Sample size: " + purchases.length, getTimeElapsed());
 
 const wallets = purchases.map(
   (purchase) => purchase.user_wallet ?? UNKNOWN_WALLET
 );
-console.log("Loaded wallets");
+console.log("Loaded wallets", getTimeElapsed());
 const uniqueWallets = Array.from(new Set(wallets.filter((wallet) => wallet)));
-console.log("Loaded unique wallets");
+console.log("Loaded unique wallets", getTimeElapsed());
 
 const getDateLabel = (date: Date) => format(date, "d/M");
 
@@ -29,19 +32,26 @@ const purchaseDates = Array.from(
       .map((date) => getDateLabel(date))
   )
 );
-console.log("Loaded purchase dates");
+console.log("Loaded purchase dates", getTimeElapsed());
+
+const purchasesByWallet: { [wallet: string]: Purchase[] } = {};
+for (const wallet of uniqueWallets) {
+  purchasesByWallet[wallet] = [];
+}
+for (const purchase of purchases) {
+  const wallet = purchase.user_wallet ?? UNKNOWN_WALLET;
+  purchasesByWallet[wallet].push(purchase);
+}
 
 const walletUsageByDate = uniqueWallets.map((wallet) =>
   purchaseDates.map((date) => {
-    return purchases.filter(
-      (purchase) =>
-        getDateLabel(new Date(purchase.created_time)) === date &&
-        (purchase.user_wallet ?? UNKNOWN_WALLET) === wallet
+    return purchasesByWallet[wallet].filter(
+      (purchase) => getDateLabel(new Date(purchase.created_time)) === date
     ).length;
   })
 );
 
-console.log("Loaded wallet usage by date");
+console.log("Loaded wallet usage by date", getTimeElapsed());
 
 type GraphsData = {
   walletsBreakdownData: ChartData<"pie">;
@@ -105,3 +115,5 @@ export const graphsData: GraphsData = {
     },
   },
 };
+
+console.log("Export", getTimeElapsed());
