@@ -6,3 +6,4 @@ node_modules
 public
 **/*.yml
 pages/api/data.json
+data/sample-data.json
