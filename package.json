@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "tsc -noEmit && next lint && yarn prettier:check",
     "prettier:fix": "yarn prettier --write .",
-    "prettier:check": "yarn prettier --check ."
+    "prettier:check": "yarn prettier --check .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "next": "13.0.3",
@@ -26,6 +27,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "prettier": "^2.7.1",
-    "typescript": "4.9.3"
+    "typescript": "4.9.3",
+    "husky": "^8.0.0"
   }
 }
