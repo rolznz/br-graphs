@@ -156,6 +156,11 @@ export const graphsData: GraphsData = {
     })),
   },
   walletTrendsOptions: {
+    elements: {
+      line: {
+        tension: 0.5,
+      },
+    },
     responsive: true,
     maintainAspectRatio: false,
     scales: {
@@ -186,6 +191,11 @@ export const graphsData: GraphsData = {
     })),
   },
   paymentMethodTrendsOptions: {
+    elements: {
+      line: {
+        tension: 0.5,
+      },
+    },
     responsive: true,
     maintainAspectRatio: false,
     scales: {
