@@ -127,6 +127,7 @@ export const graphsData: GraphsData = {
         labels: {
           font: chartFontConfig,
         },
+        position: "left",
       },
     },
   },
@@ -195,9 +196,7 @@ export const graphsData: GraphsData = {
         font: chartFontConfig,
       },
       legend: {
-        labels: {
-          font: chartFontConfig,
-        },
+        display: false,
       },
     },
   },
