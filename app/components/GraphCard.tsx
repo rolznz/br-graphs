@@ -5,6 +5,7 @@ export function GraphCard({ children }: React.PropsWithChildren) {
         className="absolute w-full h-full p-4 -z-1 flex top-0 left-0"
         style={{
           animation: "fadeOut 3s forwards",
+          pointerEvents: "none",
         }}
       >
         <div className="flex-1 bg-slate-300 rounded-xl" />
