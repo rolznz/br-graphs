@@ -137,7 +137,11 @@ export const graphsData: GraphsData = {
         },
       },
       x: {
-        max: Math.max(...([] as number[]).concat(...walletUsageByDate)),
+        max: Math.max(
+          ...Object.values(purchasesByWallet).map(
+            (purchases) => purchases.length
+          )
+        ),
         title: {
           text: "Number of purchases",
           display: true,
@@ -162,8 +166,7 @@ export const graphsData: GraphsData = {
     datasets: [
       {
         data: uniqueWallets.map(
-          (currentWallet) =>
-            wallets.filter((wallet) => wallet === currentWallet).length
+          (currentWallet) => purchasesByWallet[currentWallet].length
         ),
         backgroundColor: uniqueWallets.map((_, i) => colors[i]),
         borderColor: "#fff",
