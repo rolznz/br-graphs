@@ -1,10 +1,7 @@
 import { GraphCard } from "app/components/GraphCard";
 import { LineChart } from "app/components/LineChart";
 import { PieChart } from "app/components/PieChart";
-import { Chart } from "chart.js";
 import { graphsData } from "lib/graphsData";
-
-Chart.defaults.font.family = "Poppins";
 
 export function Graphs() {
   return (

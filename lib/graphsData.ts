@@ -1,4 +1,4 @@
-import { ChartData, ChartOptions } from "chart.js";
+import { ChartData, ChartOptions, FontSpec } from "chart.js";
 import SampleDataSmall from "data/sample-data-sm.json";
 import SampleDataFull from "data/sample-data.json";
 import { format } from "date-fns";
@@ -6,6 +6,10 @@ import { colors } from "lib/colors";
 import { Purchase } from "models/Purchase";
 
 const UNKNOWN = "Unknown";
+
+const chartFontConfig: Partial<FontSpec> = {
+  family: "Poppins, sans-serif",
+};
 
 const startTime = Date.now();
 const getTimeElapsed = () => (Date.now() - startTime) / 1000 + "s";
@@ -117,6 +121,12 @@ export const graphsData: GraphsData = {
       title: {
         display: true,
         text: "Wallets Breakdown",
+        font: chartFontConfig,
+      },
+      legend: {
+        labels: {
+          font: chartFontConfig,
+        },
       },
     },
   },
@@ -140,8 +150,12 @@ export const graphsData: GraphsData = {
       title: {
         display: true,
         text: "Zero Conf vs Onchain Transactions",
+        font: chartFontConfig,
       },
       legend: {
+        labels: {
+          font: chartFontConfig,
+        },
         reverse: true,
       },
     },
@@ -178,6 +192,12 @@ export const graphsData: GraphsData = {
       title: {
         display: true,
         text: "Wallet Trends",
+        font: chartFontConfig,
+      },
+      legend: {
+        labels: {
+          font: chartFontConfig,
+        },
       },
     },
   },
@@ -213,6 +233,12 @@ export const graphsData: GraphsData = {
       title: {
         display: true,
         text: "Payment Method Trends",
+        font: chartFontConfig,
+      },
+      legend: {
+        labels: {
+          font: chartFontConfig,
+        },
       },
     },
   },
