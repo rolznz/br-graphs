@@ -132,12 +132,12 @@ export const graphsData: GraphsData = {
     indexAxis: "y",
     scales: {
       y: {
-        min: 0,
         grid: {
           display: false,
         },
       },
       x: {
+        max: Math.max(...([] as number[]).concat(...walletUsageByDate)),
         title: {
           text: "Number of purchases",
           display: true,
