@@ -24,8 +24,8 @@ export function SandboxGraphs() {
                 </div>
                 <div
                   style={{
-                    width: "min(40vw, 40vh, 400px)",
-                    height: "min(40vw, 40vh, 400px)",
+                    width: "min(60vw, 60vh, 400px)",
+                    height: "min(60vw, 60vh, 400px)",
                     background: "#0004",
                   }}
                   className="p-4 rounded-b-xl"
