@@ -7,7 +7,7 @@ const formatHeroDate = (date: Date, includeYear = false) =>
 
 export function Hero() {
   return (
-    <div className="w-full py-16 px-8 bg-black flex flex-col justify-center items-center gap-2">
+    <div className="w-full py-16 px-4 bg-black flex flex-col justify-center items-center gap-2">
       <h1 className="text-white text-5xl font-sans font-bold tracking-wide">
         Statistics
       </h1>
