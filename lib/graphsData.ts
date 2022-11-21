@@ -124,7 +124,6 @@ export const graphsData: GraphsData = {
         font: chartFontConfig,
       },
       legend: {
-        display: false,
         labels: {
           font: chartFontConfig,
         },
