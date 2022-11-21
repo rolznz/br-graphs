@@ -29,13 +29,12 @@ const uniquePaymentMethods = Array.from(new Set(paymentMethods));
 
 const getDateLabel = (date: Date) => format(date, "d/M");
 
-const purchaseDates = Array.from(
-  new Set(
-    purchases
-      .map((purchase) => new Date(purchase.created_time))
-      .sort((a, b) => a.getTime() - b.getTime())
-      .map((date) => getDateLabel(date))
-  )
+export const sortedPurchaseDates = purchases
+  .map((purchase) => new Date(purchase.created_time))
+  .sort((a, b) => a.getTime() - b.getTime());
+
+const purchaseDateLabels = Array.from(
+  new Set(sortedPurchaseDates.map((date) => getDateLabel(date)))
 );
 console.log("Loaded purchase dates", getTimeElapsed());
 
@@ -61,7 +60,7 @@ for (const purchase of purchases) {
 console.log("Loaded purchases by payment method", getTimeElapsed());
 
 const walletUsageByDate = uniqueWallets.map((wallet) =>
-  purchaseDates.map((date) => {
+  purchaseDateLabels.map((date) => {
     return purchasesByWallet[wallet].filter(
       (purchase) => getDateLabel(new Date(purchase.created_time)) === date
     ).length;
@@ -70,7 +69,7 @@ const walletUsageByDate = uniqueWallets.map((wallet) =>
 console.log("Loaded wallet usage by date", getTimeElapsed());
 
 const paymentMethodUsageByDate = uniquePaymentMethods.map((paymentMethod) =>
-  purchaseDates.map((date) => {
+  purchaseDateLabels.map((date) => {
     return purchasesByPaymentMethod[paymentMethod].filter(
       (purchase) => getDateLabel(new Date(purchase.created_time)) === date
     ).length;
@@ -145,7 +144,7 @@ export const graphsData: GraphsData = {
     },
   },
   walletTrendsData: {
-    labels: purchaseDates,
+    labels: purchaseDateLabels,
     datasets: uniqueWallets.map((wallet, walletIndex) => ({
       type: "line",
       backgroundColor: colors[walletIndex] + "33",
@@ -180,7 +179,7 @@ export const graphsData: GraphsData = {
     },
   },
   paymentMethodTrendsData: {
-    labels: purchaseDates,
+    labels: purchaseDateLabels,
     datasets: uniquePaymentMethods.map((paymentMethod, paymentMethodIndex) => ({
       type: "line",
       backgroundColor: colors[paymentMethodIndex] + "33",
