@@ -120,10 +120,11 @@ export const graphsData: GraphsData = {
     plugins: {
       title: {
         display: true,
-        text: "Wallets Breakdown",
+        text: "Wallet Breakdown",
         font: chartFontConfig,
       },
       legend: {
+        display: false,
         labels: {
           font: chartFontConfig,
         },
@@ -164,8 +165,8 @@ export const graphsData: GraphsData = {
     labels: purchaseDateLabels,
     datasets: uniqueWallets.map((wallet, walletIndex) => ({
       type: "line",
-      backgroundColor: colors[walletIndex] + "33",
-      borderColor: colors[walletIndex],
+      backgroundColor: colors[walletIndex],
+      borderColor: colors[walletIndex] + "CC",
       data: walletUsageByDate[walletIndex],
       label: wallet,
     })),
