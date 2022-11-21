@@ -1,9 +1,19 @@
 import { ChartData, ChartOptions, FontSpec } from "chart.js";
-import SampleDataSmall from "data/sample-data-sm.json";
-import SampleDataFull from "data/sample-data.json";
+import fs from "fs";
+
 import { format } from "date-fns";
 import { colors } from "lib/colors";
 import { Purchase } from "models/Purchase";
+import { SampleData } from "models/SampleData";
+const sampleData = JSON.parse(
+  fs
+    .readFileSync(
+      `data/sample-data${
+        process.env.USE_FULL_SAMPLE === "true" ? "" : "-sm"
+      }.json`
+    )
+    .toString()
+) as SampleData;
 
 const UNKNOWN = "Unknown";
 
@@ -14,8 +24,6 @@ const chartFontConfig: Partial<FontSpec> = {
 const startTime = Date.now();
 const getTimeElapsed = () => (Date.now() - startTime) / 1000 + "s";
 
-const sampleData =
-  process.env.USE_FULL_SAMPLE === "true" ? SampleDataFull : SampleDataSmall;
 const purchases = sampleData.rows as Purchase[];
 console.log("Sample size: " + purchases.length, getTimeElapsed());
 
