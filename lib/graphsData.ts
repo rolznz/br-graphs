@@ -129,7 +129,7 @@ export const graphsData: GraphsData = {
           Math.round((onChainPurchases.length / purchases.length) * 100),
         ],
 
-        backgroundColor: [0, 1].map((_, i) => colors[i]),
+        backgroundColor: [0, 8].map((i) => colors[i]),
         borderColor: "#fff",
         borderWidth: 1,
       },
@@ -140,6 +140,9 @@ export const graphsData: GraphsData = {
       title: {
         display: true,
         text: "Zero Conf vs Onchain Transactions",
+      },
+      legend: {
+        reverse: true,
       },
     },
   },
