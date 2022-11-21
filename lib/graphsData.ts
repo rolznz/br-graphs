@@ -50,7 +50,7 @@ for (const purchase of purchases) {
 
 console.log("Loaded purchases by wallet", getTimeElapsed());
 
-const purchasesByPaymentMethod: { [wallet: string]: Purchase[] } = {};
+const purchasesByPaymentMethod: { [paymentMethod: string]: Purchase[] } = {};
 for (const paymentMethod of uniquePaymentMethods) {
   purchasesByPaymentMethod[paymentMethod] = [];
 }
@@ -58,7 +58,6 @@ for (const purchase of purchases) {
   const paymentMethod = purchase.payment_method ?? UNKNOWN;
   purchasesByPaymentMethod[paymentMethod].push(purchase);
 }
-
 console.log("Loaded purchases by payment method", getTimeElapsed());
 
 const walletUsageByDate = uniqueWallets.map((wallet) =>
@@ -182,12 +181,12 @@ export const graphsData: GraphsData = {
   },
   paymentMethodTrendsData: {
     labels: purchaseDates,
-    datasets: uniquePaymentMethods.map((wallet, walletIndex) => ({
+    datasets: uniquePaymentMethods.map((paymentMethod, paymentMethodIndex) => ({
       type: "line",
-      backgroundColor: colors[walletIndex] + "33",
-      borderColor: colors[walletIndex],
-      data: paymentMethodUsageByDate[walletIndex],
-      label: wallet,
+      backgroundColor: colors[paymentMethodIndex] + "33",
+      borderColor: colors[paymentMethodIndex],
+      data: paymentMethodUsageByDate[paymentMethodIndex],
+      label: paymentMethod,
     })),
   },
   paymentMethodTrendsOptions: {
