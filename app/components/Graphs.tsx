@@ -1,3 +1,4 @@
+import { BarChart } from "app/components/BarChart";
 import { GraphCard } from "app/components/GraphCard";
 import { LineChart } from "app/components/LineChart";
 import { PieChart } from "app/components/PieChart";
@@ -9,9 +10,9 @@ export function Graphs() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
         <div className="col-span-1 h-full">
           <GraphCard>
-            <PieChart
-              data={graphsData.walletsBreakdownData}
-              options={graphsData.walletsBreakdownOptions}
+            <BarChart
+              data={graphsData.walletsBreakdownBarData}
+              options={graphsData.walletsBreakdownBarOptions}
             />
           </GraphCard>
         </div>

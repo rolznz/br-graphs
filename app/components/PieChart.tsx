@@ -1,17 +1,8 @@
 "use client";
-import {
-  ArcElement,
-  Chart as ChartJS,
-  ChartData,
-  ChartOptions,
-  Legend,
-  Title,
-  Tooltip,
-} from "chart.js";
+import { ChartData, ChartOptions } from "chart.js";
+import "chart.js/auto";
 import React from "react";
 import { Pie } from "react-chartjs-2";
-
-ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 type PieChartProps = {
   data: ChartData<"pie">;

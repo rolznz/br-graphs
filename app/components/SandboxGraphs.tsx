@@ -31,9 +31,9 @@ export function SandboxGraphs() {
                   className="p-4 rounded-b-xl"
                 >
                   <PieChart
-                    data={graphsData.walletsBreakdownData}
+                    data={graphsData.walletsBreakdownPieData}
                     options={{
-                      ...graphsData.walletsBreakdownOptions,
+                      ...graphsData.walletsBreakdownPieOptions,
                       plugins: {
                         title: {
                           display: false,
@@ -51,7 +51,14 @@ export function SandboxGraphs() {
           <GraphCard>
             <LineChart
               data={graphsData.walletTrendsData}
-              options={graphsData.walletTrendsOptions}
+              options={{
+                ...graphsData.walletTrendsOptions,
+                plugins: {
+                  legend: {
+                    display: true,
+                  },
+                },
+              }}
             />
           </GraphCard>
         </div>

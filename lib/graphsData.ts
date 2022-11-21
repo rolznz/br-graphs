@@ -99,8 +99,10 @@ const onChainPurchases = purchases.filter(
 console.log("Loaded z-conf and onchain transactions", getTimeElapsed());
 
 type GraphsData = {
-  walletsBreakdownData: ChartData<"pie">;
-  walletsBreakdownOptions: ChartOptions<"pie">;
+  walletsBreakdownBarData: ChartData<"bar">;
+  walletsBreakdownBarOptions: ChartOptions<"bar">;
+  walletsBreakdownPieData: ChartData<"pie">;
+  walletsBreakdownPieOptions: ChartOptions<"pie">;
   zeroConfBreakdownData: ChartData<"pie">;
   zeroConfBreakdownOptions: ChartOptions<"pie">;
   walletTrendsData: ChartData<"line">;
@@ -110,7 +112,52 @@ type GraphsData = {
 };
 
 export const graphsData: GraphsData = {
-  walletsBreakdownData: {
+  walletsBreakdownBarData: {
+    labels: uniqueWallets,
+    datasets: [
+      {
+        data: uniqueWallets.map(
+          (currentWallet) =>
+            wallets.filter((wallet) => wallet === currentWallet).length
+        ),
+        backgroundColor: uniqueWallets.map((_, i) => colors[i] + "AA"),
+        borderColor: uniqueWallets.map((_, i) => colors[i]),
+        borderWidth: 3,
+      },
+    ],
+  },
+  walletsBreakdownBarOptions: {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: "y",
+    scales: {
+      y: {
+        min: 0,
+        grid: {
+          display: false,
+        },
+      },
+      x: {
+        title: {
+          text: "Number of purchases",
+          display: true,
+        },
+        grid: {
+          display: false,
+        },
+      },
+    },
+    plugins: {
+      title: {
+        display: true,
+        text: "Wallet Breakdown",
+      },
+      legend: {
+        display: false,
+      },
+    },
+  },
+  walletsBreakdownPieData: {
     labels: uniqueWallets,
     datasets: [
       {
@@ -124,7 +171,7 @@ export const graphsData: GraphsData = {
       },
     ],
   },
-  walletsBreakdownOptions: {
+  walletsBreakdownPieOptions: {
     plugins: {
       title: {
         display: true,

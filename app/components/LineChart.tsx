@@ -9,6 +9,7 @@ import {
   PointElement,
   Title,
 } from "chart.js";
+import "chart.js/auto";
 import { Line } from "react-chartjs-2";
 Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title);
 
