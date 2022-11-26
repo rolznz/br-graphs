@@ -1,17 +1,9 @@
 import { ChartData, ChartOptions, FontSpec } from "chart.js";
-import fs from "fs";
 
 import { format } from "date-fns";
 import { colors } from "lib/colors";
-import { Purchase } from "models/Purchase";
-import { SampleData } from "models/SampleData";
-const sampleData = JSON.parse(
-  fs
-    .readFileSync(
-      `data/sample-data${process.env.SAMPLE_DATA_SUFFIX || ""}.json`
-    )
-    .toString()
-) as SampleData;
+import { sampleData } from "lib/sampleData";
+import { Purchase } from "types/Purchase";
 
 const UNKNOWN = "Unknown";
 
@@ -22,7 +14,14 @@ const chartFontConfig: Partial<FontSpec> = {
 const startTime = Date.now();
 const getTimeElapsed = () => (Date.now() - startTime) / 1000 + "s";
 
-const purchases = sampleData.rows as Purchase[];
+export const purchases = sampleData.rows as Purchase[];
+export const sortedPurchaseDates = purchases
+  .map((purchase) => new Date(purchase.created_time))
+  .sort((a, b) => a.getTime() - b.getTime());
+
+export const firstPurchase = sortedPurchaseDates[0];
+export const lastPurchase = sortedPurchaseDates[sortedPurchaseDates.length - 1];
+
 console.log("Sample size: " + purchases.length, getTimeElapsed());
 
 const wallets = purchases.map((purchase) => purchase.user_wallet ?? UNKNOWN);
@@ -38,10 +37,6 @@ console.log("Loaded unique wallets", getTimeElapsed());
 const uniquePaymentMethods = Array.from(new Set(paymentMethods));
 
 const getDateLabel = (date: Date) => format(date, "d/M");
-
-export const sortedPurchaseDates = purchases
-  .map((purchase) => new Date(purchase.created_time))
-  .sort((a, b) => a.getTime() - b.getTime());
 
 const purchaseDateLabels = Array.from(
   new Set(sortedPurchaseDates.map((date) => getDateLabel(date)))
@@ -97,6 +92,8 @@ const onChainPurchases = purchases.filter(
 console.log("Loaded z-conf and onchain transactions", getTimeElapsed());
 
 type GraphsData = {
+  walletTimeTrendsData: ChartData<"line", { x: Date; y: number }[]>;
+  walletTimeTrendsOptions: ChartOptions<"line">;
   walletsBreakdownBarData: ChartData<"bar">;
   walletsBreakdownBarOptions: ChartOptions<"bar">;
   walletsBreakdownPieData: ChartData<"pie">;
@@ -110,6 +107,43 @@ type GraphsData = {
 };
 
 export const graphsData: GraphsData = {
+  walletTimeTrendsData: {
+    datasets: uniqueWallets.map((wallet, walletIndex) => ({
+      type: "line",
+      label: wallet,
+      data: purchasesByWallet[wallet].map((p) => ({
+        x: new Date(p.created_time),
+        y: 1,
+      })),
+      backgroundColor: colors[walletIndex],
+      borderColor: colors[walletIndex] + "CC",
+    })),
+  },
+  walletTimeTrendsOptions: {
+    responsive: true,
+    maintainAspectRatio: false,
+    elements: {
+      line: {
+        tension: 0.5,
+      },
+    },
+    scales: {
+      yAxis: {
+        min: 0,
+        max: Math.max(...([] as number[]).concat(...walletUsageByDate)),
+        title: {
+          text: "Number of purchases",
+          display: true,
+        },
+      },
+      xAxis: {
+        type: "time",
+        time: {
+          unit: "week",
+        },
+      },
+    },
+  },
   walletsBreakdownBarData: {
     labels: uniqueWallets,
     datasets: [
@@ -118,9 +152,9 @@ export const graphsData: GraphsData = {
           (currentWallet) =>
             wallets.filter((wallet) => wallet === currentWallet).length
         ),
-        backgroundColor: uniqueWallets.map((_, i) => colors[i] + "AA"),
-        borderColor: uniqueWallets.map((_, i) => colors[i]),
-        borderWidth: 3,
+        backgroundColor: uniqueWallets.map((_, i) => colors[i]),
+        borderColor: "#fff", //uniqueWallets.map((_, i) => colors[i]),
+        borderWidth: 1,
       },
     ],
   },
@@ -151,7 +185,7 @@ export const graphsData: GraphsData = {
     },
     plugins: {
       title: {
-        display: true,
+        display: false,
         text: "Wallet Breakdown",
       },
       legend: {
@@ -163,8 +197,10 @@ export const graphsData: GraphsData = {
     labels: uniqueWallets,
     datasets: [
       {
-        data: uniqueWallets.map(
-          (currentWallet) => purchasesByWallet[currentWallet].length
+        data: uniqueWallets.map((currentWallet) =>
+          Math.round(
+            (purchasesByWallet[currentWallet].length / purchases.length) * 100
+          )
         ),
         backgroundColor: uniqueWallets.map((_, i) => colors[i]),
         borderColor: "#fff",
@@ -173,9 +209,11 @@ export const graphsData: GraphsData = {
     ],
   },
   walletsBreakdownPieOptions: {
+    responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       title: {
-        display: true,
+        display: false,
         text: "Wallet Breakdown",
         font: chartFontConfig,
       },

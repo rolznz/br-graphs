@@ -6,7 +6,9 @@ export default function Page() {
   return (
     <>
       <WalletsSection />
-      <Graphs />
+      <div data-theme="cupcake">
+        <Graphs />
+      </div>
     </>
   );
 }

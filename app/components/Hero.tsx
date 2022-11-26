@@ -9,13 +9,10 @@ export function Hero() {
   return (
     <div className="hero min-h-screen">
       <div className="hero-content pb-16 text-center">
-        <div className="max-w-md">
-          <h1 className="mb-4 text-6xl text-primary-content font-bold tracking-wide">
-            Statistics
+        <div className="max-w-lg">
+          <h1 className="mb-4 text-4xl text-primary-content font-bold tracking-wide">
+            Customer Purchases
           </h1>
-          <h2 className="text-primary-content text-lg">
-            Purchases by all customers
-          </h2>
           <h3 className="mb-4 text-primary-content text-sm">
             {formatHeroDate(sortedPurchaseDates[0])} -{" "}
             {formatHeroDate(

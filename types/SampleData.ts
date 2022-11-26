@@ -1,4 +1,4 @@
-import { Purchase } from "models/Purchase";
+import { Purchase } from "types/Purchase";
 
 export type SampleData = {
   rows: Purchase[];

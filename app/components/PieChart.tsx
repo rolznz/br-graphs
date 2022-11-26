@@ -13,7 +13,7 @@ type PieChartProps = {
 const formatPercentPlugins: ChartOptions<"pie">["plugins"] = {
   tooltip: {
     callbacks: {
-      label: (tooltipItem) => tooltipItem.raw + "%",
+      label: (tooltipItem) => [tooltipItem.label, tooltipItem.raw + "%"],
     },
   },
 };
