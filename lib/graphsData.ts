@@ -8,9 +8,7 @@ import { SampleData } from "models/SampleData";
 const sampleData = JSON.parse(
   fs
     .readFileSync(
-      `data/sample-data${
-        process.env.USE_FULL_SAMPLE === "true" ? "" : "-sm"
-      }.json`
+      `data/sample-data${process.env.SAMPLE_DATA_SUFFIX || ""}.json`
     )
     .toString()
 ) as SampleData;
