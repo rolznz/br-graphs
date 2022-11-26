@@ -1,4 +1,3 @@
-import { Navigation } from "app/components/Navigation";
 import { format } from "date-fns";
 import { sortedPurchaseDates } from "lib/graphsData";
 
@@ -16,10 +15,7 @@ export function Hero() {
         {formatHeroDate(
           sortedPurchaseDates[sortedPurchaseDates.length - 1],
           true
-        )}{" "}
-        <span className="max-md:hidden">| </span>
-        <br className="md:hidden" />
-        <Navigation />
+        )}
       </h2>
     </div>
   );
