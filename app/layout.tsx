@@ -6,10 +6,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html data-theme="dark">
+    <html>
       <head />
-      <body className="from-primary to-secondary bg-gradient-to-b">
-        <div className="relative">
+      <body>
+        <div
+          className="relative bg-gradient-to-b from-primary to-secondary"
+          data-theme="dark"
+        >
           <div className="absolute bottom-0 overflow-hidden max-w-full opacity-30">
             <svg
               className="fill-secondary"
@@ -24,9 +27,7 @@ export default function RootLayout({
           </div>
           <Hero />
         </div>
-        <div id="layout-children" className="bg-slate-200">
-          {children}
-        </div>
+        <div id="layout-children">{children}</div>
       </body>
     </html>
   );
