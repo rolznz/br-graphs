@@ -1,55 +1,53 @@
 "use client";
 import { ChartData, ChartOptions } from "chart.js";
 import "chart.js/auto";
+import { chartFontConfig } from "lib/chartFontConfig";
 import { defaultChartFilters } from "lib/defaultChartFilters";
-import merge from "lodash.merge";
 import React from "react";
 import { Pie } from "react-chartjs-2";
 import { ChartFilters } from "types/ChartFilters";
 
-type PieChartProps = {
-  data: ChartData<"pie", { x: string; y: number }[]>;
-  options: ChartOptions<"pie">;
-  formatPercent?: boolean;
-  filters?: ChartFilters;
-};
+const defaultPieChartOptions: ChartOptions<"pie"> = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      labels: {
+        font: chartFontConfig,
+      },
+      position: "left",
+      reverse: true, // zero conf
+    },
+    tooltip: {
+      callbacks: {
+        label: (tooltipItem) => {
+          const totalAmount = (
+            tooltipItem.chart.data.datasets[0].data as number[]
+          ).reduce((a, b) => a + b);
 
-const formatPercentPlugins: ChartOptions<"pie">["plugins"] = {
-  tooltip: {
-    callbacks: {
-      label: (tooltipItem) => {
-        const totalAmount = (
-          tooltipItem.chart.data.datasets[0].data as number[]
-        ).reduce((a, b) => a + b);
-
-        return [
-          tooltipItem.label,
-          tooltipItem.raw +
-            " (" +
-            Math.round(((tooltipItem.raw as number) * 100) / totalAmount) +
-            "%)",
-        ];
+          return [
+            tooltipItem.label,
+            tooltipItem.raw +
+              " (" +
+              Math.round(((tooltipItem.raw as number) * 100) / totalAmount) +
+              "%)",
+          ];
+        },
       },
     },
   },
 };
 
+type PieChartProps = {
+  data: ChartData<"pie", { x: string; y: number }[]>;
+  formatPercent?: boolean;
+  filters?: ChartFilters;
+};
+
 export function PieChart({
   data,
-  options,
-  formatPercent,
   filters = defaultChartFilters,
 }: PieChartProps) {
-  const extendedOptions = React.useMemo(
-    () =>
-      formatPercent
-        ? merge({}, options, {
-            plugins: formatPercentPlugins,
-          })
-        : options,
-    [formatPercent, options]
-  );
-
   const rangeData = React.useMemo(
     () => ({
       ...data,
@@ -88,7 +86,5 @@ export function PieChart({
     [rangeData.datasets, rangeData.labels]
   );
 
-  console.log("RANGE DATA", rangeData);
-
-  return <Pie data={pieData} options={extendedOptions} />;
+  return <Pie data={pieData} options={defaultPieChartOptions} />;
 }

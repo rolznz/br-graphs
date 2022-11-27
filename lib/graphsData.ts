@@ -1,4 +1,4 @@
-import { ChartData, ChartOptions, FontSpec } from "chart.js";
+import { ChartData } from "chart.js";
 
 import { format } from "date-fns";
 import { colors } from "lib/colors";
@@ -6,10 +6,6 @@ import { sampleData } from "lib/sampleData";
 import { Purchase } from "types/Purchase";
 
 const UNKNOWN = "Unknown";
-
-const chartFontConfig: Partial<FontSpec> = {
-  family: "Poppins, sans-serif",
-};
 
 const startTime = Date.now();
 const getTimeElapsed = () => (Date.now() - startTime) / 1000 + "s";
@@ -65,24 +61,6 @@ for (const purchase of purchases) {
 }
 console.log("Loaded purchases by payment method", getTimeElapsed());
 
-const walletUsageByDate = uniqueWallets.map((wallet) =>
-  purchaseDateLabels.map((date) => {
-    return purchasesByWallet[wallet].filter(
-      (purchase) => getDateLabel(new Date(purchase.created_time)) === date
-    ).length;
-  })
-);
-console.log("Loaded wallet usage by date", getTimeElapsed());
-
-const paymentMethodUsageByDate = uniquePaymentMethods.map((paymentMethod) =>
-  purchaseDateLabels.map((date) => {
-    return purchasesByPaymentMethod[paymentMethod].filter(
-      (purchase) => getDateLabel(new Date(purchase.created_time)) === date
-    ).length;
-  })
-);
-console.log("Loaded payment method usage by date", getTimeElapsed());
-
 const zeroConfPurchases = purchases.filter(
   (purchase) => !!purchase.zero_conf_time
 );
@@ -90,255 +68,74 @@ const onChainPurchases = purchases.filter(
   (purchase) => (purchase.time_to_onchain_conf ?? 0) > 0
 );
 
+const uniqueConfTypes = ["Zero Conf", "On-Chain Transactions"];
+const purchasesByConfType = {
+  [uniqueConfTypes[0]]: zeroConfPurchases,
+  [uniqueConfTypes[1]]: onChainPurchases,
+};
+
 console.log("Loaded z-conf and onchain transactions", getTimeElapsed());
 
 type GraphsData = {
   walletTimeTrendsData: ChartData<"line", { x: string; y: number }[]>;
-  walletTimeTrendsOptions: ChartOptions<"line">;
-  walletsBreakdownBarData: ChartData<"bar">;
-  walletsBreakdownBarOptions: ChartOptions<"bar">;
-  walletsBreakdownPieData: ChartData<"pie", { x: string; y: number }[]>;
-  walletsBreakdownPieOptions: ChartOptions<"pie">;
-  zeroConfBreakdownData: ChartData<"pie">;
-  zeroConfBreakdownOptions: ChartOptions<"pie">;
-  walletTrendsData: ChartData<"line">;
-  walletTrendsOptions: ChartOptions<"line">;
-  paymentMethodTrendsData: ChartData<"line">;
-  paymentMethodTrendsOptions: ChartOptions<"line">;
+  walletsBreakdownData: ChartData<"pie", { x: string; y: number }[]>;
+  paymentMethodTrendsData: ChartData<"line", { x: string; y: number }[]>;
+  paymentMethodsBreakdownData: ChartData<"pie", { x: string; y: number }[]>;
+  zeroConfTrendsData: ChartData<"line", { x: string; y: number }[]>;
+  zeroConfBreakdownData: ChartData<"pie", { x: string; y: number }[]>;
 };
 
-export const graphsData: GraphsData = {
-  walletTimeTrendsData: {
-    datasets: uniqueWallets.map((wallet, walletIndex) => ({
-      type: "line",
-      label: wallet,
-      data: purchasesByWallet[wallet].map((p) => ({
-        x: p.created_time,
-        y: 1,
-      })),
-      backgroundColor: colors[walletIndex] + "33",
-      borderColor: colors[walletIndex],
+const generateTrendData = (
+  uniqueEntities: string[],
+  purchasesByEntity: { [entity: string]: Purchase[] }
+): ChartData<"line", { x: string; y: number }[]> => ({
+  datasets: uniqueEntities.map((entity, entityIndex) => ({
+    type: "line",
+    label: entity,
+    data: purchasesByEntity[entity].map((p) => ({
+      x: p.created_time,
+      y: 1,
     })),
-  },
-  walletTimeTrendsOptions: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: "bottom",
-      },
-    },
-    elements: {
-      line: {
-        tension: 0.5,
-        fill: true,
-      },
-    },
-    scales: {
-      yAxis: {
-        min: 0,
-        max: Math.max(...([] as number[]).concat(...walletUsageByDate)),
-        title: {
-          text: "Number of purchases",
-          display: true,
-        },
-      },
-      xAxis: {
-        type: "time",
-        time: {
-          unit: "week",
-        },
-      },
-    },
-  },
-  walletsBreakdownBarData: {
-    labels: uniqueWallets,
-    datasets: [
-      {
-        data: uniqueWallets.map(
-          (currentWallet) =>
-            wallets.filter((wallet) => wallet === currentWallet).length
-        ),
-        backgroundColor: uniqueWallets.map((_, i) => colors[i]),
-        borderColor: "#fff",
-        borderWidth: 1,
-      },
-    ],
-  },
-  walletsBreakdownBarOptions: {
-    responsive: true,
-    maintainAspectRatio: false,
-    indexAxis: "y",
-    scales: {
-      y: {
-        grid: {
-          display: false,
-        },
-      },
-      x: {
-        max: Math.max(
-          ...Object.values(purchasesByWallet).map(
-            (purchases) => purchases.length
-          )
-        ),
-        title: {
-          text: "Number of purchases",
-          display: true,
-        },
-        grid: {
-          display: false,
-        },
-      },
-    },
-    plugins: {
-      title: {
-        display: false,
-        text: "Wallet Breakdown",
-      },
-      legend: {
-        display: false,
-      },
-    },
-  },
-  walletsBreakdownPieData: {
-    labels: uniqueWallets,
-    datasets: uniqueWallets.map((wallet, walletIndex) => ({
-      data: purchasesByWallet[wallet].map((p) => ({
-        x: p.created_time,
-        y: 1,
-      })),
-      backgroundColor: colors[walletIndex],
-      borderColor: "#fff",
-      borderWidth: 1,
-    })),
-  },
-  walletsBreakdownPieOptions: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: false,
-        text: "Wallet Breakdown",
-        font: chartFontConfig,
-      },
-      legend: {
-        labels: {
-          font: chartFontConfig,
-        },
-        position: "left",
-      },
-    },
-  },
-  zeroConfBreakdownData: {
-    labels: ["Zero Conf", "On-Chain Transactions"],
-    datasets: [
-      {
-        data: [
-          Math.round((zeroConfPurchases.length / purchases.length) * 100),
-          Math.round((onChainPurchases.length / purchases.length) * 100),
-        ],
+    backgroundColor: colors[entityIndex] + "33",
+    borderColor: colors[entityIndex],
+  })),
+});
 
-        backgroundColor: [0, 8].map((i) => colors[i]),
-        borderColor: "#fff",
-        borderWidth: 1,
-      },
-    ],
-  },
-  zeroConfBreakdownOptions: {
-    plugins: {
-      title: {
-        display: true,
-        text: "Zero Conf vs Onchain Transactions",
-        font: chartFontConfig,
-      },
-      legend: {
-        labels: {
-          font: chartFontConfig,
-        },
-        reverse: true,
-      },
-    },
-  },
-  walletTrendsData: {
-    labels: purchaseDateLabels,
-    datasets: uniqueWallets.map((wallet, walletIndex) => ({
-      type: "line",
-      backgroundColor: colors[walletIndex],
-      borderColor: colors[walletIndex] + "CC",
-      data: walletUsageByDate[walletIndex],
-      label: wallet,
+const generateBreakdownData = (
+  uniqueEntities: string[],
+  purchasesByEntity: { [entity: string]: Purchase[] }
+): ChartData<"pie", { x: string; y: number }[]> => ({
+  labels: uniqueEntities,
+  datasets: uniqueEntities.map((entity, entityIndex) => ({
+    data: purchasesByEntity[entity].map((p) => ({
+      x: p.created_time,
+      y: 1,
     })),
-  },
-  walletTrendsOptions: {
-    elements: {
-      line: {
-        tension: 0.5,
-      },
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      yAxis: {
-        min: 0,
-        max: Math.max(...([] as number[]).concat(...walletUsageByDate)),
-        title: {
-          text: "Number of purchases",
-          display: true,
-        },
-      },
-    },
-    plugins: {
-      title: {
-        display: true,
-        text: "Wallet Trends",
-        font: chartFontConfig,
-      },
-      legend: {
-        display: false,
-      },
-    },
-  },
-  paymentMethodTrendsData: {
-    labels: purchaseDateLabels,
-    datasets: uniquePaymentMethods.map((paymentMethod, paymentMethodIndex) => ({
-      type: "line",
-      backgroundColor: colors[paymentMethodIndex] + "33",
-      borderColor: colors[paymentMethodIndex],
-      data: paymentMethodUsageByDate[paymentMethodIndex],
-      label: paymentMethod,
-    })),
-  },
-  paymentMethodTrendsOptions: {
-    elements: {
-      line: {
-        tension: 0.5,
-      },
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      yAxis: {
-        min: 0,
-        max: Math.max(...([] as number[]).concat(...paymentMethodUsageByDate)),
-        title: {
-          text: "Number of purchases",
-          display: true,
-        },
-      },
-    },
-    plugins: {
-      title: {
-        display: true,
-        text: "Payment Method Trends",
-        font: chartFontConfig,
-      },
-      legend: {
-        labels: {
-          font: chartFontConfig,
-        },
-      },
-    },
-  },
+    backgroundColor: colors[entityIndex],
+    borderColor: "#fff",
+    borderWidth: 1,
+  })),
+});
+
+export const graphsData: GraphsData = {
+  walletTimeTrendsData: generateTrendData(uniqueWallets, purchasesByWallet),
+  walletsBreakdownData: generateBreakdownData(uniqueWallets, purchasesByWallet),
+  paymentMethodTrendsData: generateTrendData(
+    uniquePaymentMethods,
+    purchasesByPaymentMethod
+  ),
+
+  paymentMethodsBreakdownData: generateBreakdownData(
+    uniquePaymentMethods,
+    purchasesByPaymentMethod
+  ),
+
+  zeroConfTrendsData: generateTrendData(uniqueConfTypes, purchasesByConfType),
+
+  zeroConfBreakdownData: generateBreakdownData(
+    uniqueConfTypes,
+    purchasesByConfType
+  ),
 };
 
 console.log("Export", getTimeElapsed());

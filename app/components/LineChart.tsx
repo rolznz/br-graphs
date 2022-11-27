@@ -2,6 +2,7 @@
 import { ChartData, ChartOptions } from "chart.js";
 import "chart.js/auto";
 import "chartjs-adapter-date-fns";
+import { chartFontConfig } from "lib/chartFontConfig";
 import { defaultChartFilters } from "lib/defaultChartFilters";
 import { convertDate, groupData, padEmpty } from "lib/lineChartDataUtils";
 import merge from "lodash.merge";
@@ -9,9 +10,40 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 import { ChartFilters } from "types/ChartFilters";
 
+const defaultLineChartOptions: ChartOptions<"line"> = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: "bottom",
+      labels: {
+        font: chartFontConfig,
+      },
+    },
+  },
+  elements: {
+    line: {
+      tension: 0.5,
+      fill: true,
+    },
+  },
+  scales: {
+    yAxis: {
+      title: {
+        display: true,
+        text: "Number of purchases",
+        font: chartFontConfig,
+      },
+    },
+    xAxis: {
+      type: "time",
+    },
+  },
+};
+
 type LineChartProps = {
   data: ChartData<"line", { x: string; y: number }[]>;
-  options: ChartOptions<"line">;
+  title?: string;
   firstPurchaseDateString: string;
   lastPurchaseDateString: string;
   filters?: ChartFilters;
@@ -19,7 +51,6 @@ type LineChartProps = {
 
 export function LineChart({
   data,
-  options,
   firstPurchaseDateString,
   lastPurchaseDateString,
   filters = defaultChartFilters,
@@ -73,7 +104,7 @@ export function LineChart({
 
   const extendedOptions = React.useMemo(
     () =>
-      merge({}, options, {
+      merge({}, defaultLineChartOptions, {
         scales: {
           yAxis: {
             max: Math.max(
@@ -91,7 +122,7 @@ export function LineChart({
           },
         },
       }),
-    [rangeData.datasets, options, filters]
+    [rangeData.datasets, filters.timeFormat]
   );
 
   return <Line data={rangeData} options={extendedOptions} />;

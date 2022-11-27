@@ -1,13 +1,14 @@
 import { ChartFilter } from "app/components/ChartFilter";
 import { GraphCard } from "app/components/GraphCard";
 import { LineChart } from "app/components/LineChart";
-import {
-  firstPurchaseDate,
-  graphsData,
-  lastPurchaseDate,
-} from "lib/graphsData";
+import { ChartData } from "chart.js";
+import { firstPurchaseDate, lastPurchaseDate } from "lib/graphsData";
 
-export function WalletTrendsData() {
+type TrendsProps = {
+  data: ChartData<"line", { x: string; y: number }[]>;
+};
+
+export function Trends({ data }: TrendsProps) {
   return (
     <div className="w-full">
       <GraphCard>
@@ -19,8 +20,7 @@ export function WalletTrendsData() {
           <LineChart
             firstPurchaseDateString={firstPurchaseDate.toISOString()}
             lastPurchaseDateString={lastPurchaseDate.toISOString()}
-            data={graphsData.walletTimeTrendsData}
-            options={graphsData.walletTimeTrendsOptions}
+            data={data}
           />
         </ChartFilter>
       </GraphCard>
