@@ -2,10 +2,11 @@ import { ChartFilter } from "app/components/ChartFilter";
 import { GraphCard } from "app/components/GraphCard";
 import { LineChart } from "app/components/LineChart";
 import { ChartData } from "chart.js";
-import { firstPurchaseDate, lastPurchaseDate } from "lib/graphsData";
+import { firstPurchaseDate, lastPurchaseDate } from "lib/graphData";
+import { ChartDataArray } from "types/ChartDataArray";
 
 type TrendsProps = {
-  data: ChartData<"line", { x: string; y: number }[]>;
+  data: ChartData<"line", ChartDataArray>;
 };
 
 export function Trends({ data }: TrendsProps) {

@@ -8,6 +8,7 @@ import { convertDate, groupData, padEmpty } from "lib/lineChartDataUtils";
 import merge from "lodash.merge";
 import React from "react";
 import { Line } from "react-chartjs-2";
+import { ChartDataArray } from "types/ChartDataArray";
 import { ChartFilters } from "types/ChartFilters";
 
 const defaultLineChartOptions: ChartOptions<"line"> = {
@@ -42,7 +43,7 @@ const defaultLineChartOptions: ChartOptions<"line"> = {
 };
 
 type LineChartProps = {
-  data: ChartData<"line", { x: string; y: number }[]>;
+  data: ChartData<"line", ChartDataArray>;
   title?: string;
   firstPurchaseDateString: string;
   lastPurchaseDateString: string;

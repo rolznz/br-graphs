@@ -1,6 +1,6 @@
 import { ViewStatisticsButton } from "app/components/ViewStatisticsButton";
 import { format } from "date-fns";
-import { sortedPurchaseDates } from "lib/graphsData";
+import { sortedPurchaseDates } from "lib/graphData";
 
 const formatHeroDate = (date: Date, includeYear = false) =>
   format(date, `MMM d${includeYear ? ", yyyy" : ""}`);

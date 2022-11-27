@@ -5,6 +5,7 @@ import { chartFontConfig } from "lib/chartFontConfig";
 import { defaultChartFilters } from "lib/defaultChartFilters";
 import React from "react";
 import { Pie } from "react-chartjs-2";
+import { ChartDataArray } from "types/ChartDataArray";
 import { ChartFilters } from "types/ChartFilters";
 
 const defaultPieChartOptions: ChartOptions<"pie"> = {
@@ -39,7 +40,7 @@ const defaultPieChartOptions: ChartOptions<"pie"> = {
 };
 
 type PieChartProps = {
-  data: ChartData<"pie", { x: string; y: number }[]>;
+  data: ChartData<"pie", ChartDataArray>;
   formatPercent?: boolean;
   filters?: ChartFilters;
 };

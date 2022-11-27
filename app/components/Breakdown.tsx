@@ -3,10 +3,11 @@ import { ChartFilter } from "app/components/ChartFilter";
 import { GraphCard } from "app/components/GraphCard";
 import { PieChart } from "app/components/PieChart";
 import { ChartData } from "chart.js";
-import { firstPurchaseDate, lastPurchaseDate } from "lib/graphsData";
+import { firstPurchaseDate, lastPurchaseDate } from "lib/graphData";
+import { ChartDataArray } from "types/ChartDataArray";
 
 type BreakdownData = {
-  data: ChartData<"pie", { x: string; y: number }[]>;
+  data: ChartData<"pie", ChartDataArray>;
 };
 
 export function Breakdown({ data }: BreakdownData) {
