@@ -10,7 +10,7 @@ export const generateBreakdownData = (
   labels: uniqueEntities,
   datasets: uniqueEntities.map((entity, entityIndex) => ({
     data: purchasesByEntity[entity].map((p) => ({
-      x: p.created_time,
+      x: new Date(p.created_time).getTime(),
       y: 1,
     })),
     backgroundColor: colors[entityIndex],

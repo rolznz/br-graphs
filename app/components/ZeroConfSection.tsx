@@ -12,10 +12,10 @@ export function ZeroConfSection() {
     <Section title="Zero Conf vs Onchain Transactions" theme="valentine">
       <TabGroup tabs={walletTabs} initialTab="trends">
         <Tab description="The below chart shows which confirmation type was used for purchases, and how confirmation type usage has changed over time.">
-          <Trends data={graphData.walletTimeTrendsData} />
+          <Trends data={graphData.zeroConfTrendsData} />
         </Tab>
         <Tab description="The below chart shows how often zero-conf was used for purchases, compared to on-chain transactions">
-          <Breakdown data={graphData.walletsBreakdownData} />
+          <Breakdown data={graphData.zeroConfBreakdownData} />
         </Tab>
       </TabGroup>
     </Section>

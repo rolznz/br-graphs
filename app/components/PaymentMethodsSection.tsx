@@ -12,10 +12,10 @@ export function PaymentMethodsSection() {
     <Section title="Payment Methods" theme="emerald">
       <TabGroup tabs={walletTabs} initialTab="trends">
         <Tab description="The below chart shows which currency users made purchases with, and how user preferences have changed over time.">
-          <Trends data={graphData.walletTimeTrendsData} />
+          <Trends data={graphData.paymentMethodTrendsData} />
         </Tab>
         <Tab description="The below chart shows the popularity of different currencies, based on how many purchases were made per currency.">
-          <Breakdown data={graphData.walletsBreakdownData} />
+          <Breakdown data={graphData.paymentMethodsBreakdownData} />
         </Tab>
       </TabGroup>
     </Section>

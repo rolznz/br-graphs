@@ -11,7 +11,7 @@ export const generateTrendData = (
     type: "line",
     label: entity,
     data: purchasesByEntity[entity].map((p) => ({
-      x: p.created_time,
+      x: new Date(p.created_time).getTime(),
       y: 1,
     })),
     backgroundColor: colors[entityIndex] + "33",

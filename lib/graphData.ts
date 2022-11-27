@@ -70,19 +70,19 @@ console.log("Loaded z-conf and onchain transactions", getTimeElapsed());
 export const graphData = {
   walletTimeTrendsData: generateTrendData(uniqueWallets, purchasesByWallet),
   walletsBreakdownData: generateBreakdownData(uniqueWallets, purchasesByWallet),
-  // paymentMethodTrendsData: generateTrendData(
-  //   uniquePaymentMethods,
-  //   purchasesByPaymentMethod
-  // ),
-  // paymentMethodsBreakdownData: generateBreakdownData(
-  //   uniquePaymentMethods,
-  //   purchasesByPaymentMethod
-  // ),
-  // zeroConfTrendsData: generateTrendData(uniqueConfTypes, purchasesByConfType),
-  // zeroConfBreakdownData: generateBreakdownData(
-  //   uniqueConfTypes,
-  //   purchasesByConfType
-  // ),
+  paymentMethodTrendsData: generateTrendData(
+    uniquePaymentMethods,
+    purchasesByPaymentMethod
+  ),
+  paymentMethodsBreakdownData: generateBreakdownData(
+    uniquePaymentMethods,
+    purchasesByPaymentMethod
+  ),
+  zeroConfTrendsData: generateTrendData(uniqueConfTypes, purchasesByConfType),
+  zeroConfBreakdownData: generateBreakdownData(
+    uniqueConfTypes,
+    purchasesByConfType
+  ),
 };
 
 console.log("Export", getTimeElapsed());

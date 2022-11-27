@@ -1,4 +1,3 @@
-// import { BarChart } from "app/components/BarChart";
 import { ChartFilter } from "app/components/ChartFilter";
 import { GraphCard } from "app/components/GraphCard";
 import { PieChart } from "app/components/PieChart";

@@ -1,1 +1,1 @@
-export type ChartDataArray = { x: string; y: number }[];
+export type ChartDataArray = { x: number; y: number }[];
