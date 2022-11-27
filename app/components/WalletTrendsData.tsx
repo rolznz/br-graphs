@@ -1,3 +1,4 @@
+import { ChartFilter } from "app/components/ChartFilter";
 import { GraphCard } from "app/components/GraphCard";
 import { LineChart } from "app/components/LineChart";
 import {
@@ -10,12 +11,18 @@ export function WalletTrendsData() {
   return (
     <div className="w-full">
       <GraphCard>
-        <LineChart
+        <ChartFilter
           firstPurchaseDateString={firstPurchaseDate.toISOString()}
           lastPurchaseDateString={lastPurchaseDate.toISOString()}
-          data={graphsData.walletTimeTrendsData}
-          options={graphsData.walletTimeTrendsOptions}
-        />
+          showTimeFormat
+        >
+          <LineChart
+            firstPurchaseDateString={firstPurchaseDate.toISOString()}
+            lastPurchaseDateString={lastPurchaseDate.toISOString()}
+            data={graphsData.walletTimeTrendsData}
+            options={graphsData.walletTimeTrendsOptions}
+          />
+        </ChartFilter>
       </GraphCard>
     </div>
   );

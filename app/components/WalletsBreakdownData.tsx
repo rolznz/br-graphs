@@ -1,28 +1,41 @@
-import { BarChart } from "app/components/BarChart";
+// import { BarChart } from "app/components/BarChart";
+import { ChartFilter } from "app/components/ChartFilter";
 import { GraphCard } from "app/components/GraphCard";
 import { PieChart } from "app/components/PieChart";
-import { graphsData } from "lib/graphsData";
+import {
+  firstPurchaseDate,
+  graphsData,
+  lastPurchaseDate,
+} from "lib/graphsData";
 
 export function WalletsBreakdownData() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-      <div>
-        <GraphCard shrinkOnMobile>
+    <div className="w-full">
+      <GraphCard shrinkOnMobile>
+        <ChartFilter
+          firstPurchaseDateString={firstPurchaseDate.toISOString()}
+          lastPurchaseDateString={lastPurchaseDate.toISOString()}
+        >
           <PieChart
             formatPercent
             data={graphsData.walletsBreakdownPieData}
             options={graphsData.walletsBreakdownPieOptions}
           />
-        </GraphCard>
-      </div>
-      <div>
+        </ChartFilter>
+      </GraphCard>
+      {/* <div>
         <GraphCard>
-          <BarChart
-            data={graphsData.walletsBreakdownBarData}
-            options={graphsData.walletsBreakdownBarOptions}
-          />
+          <ChartFilter
+            firstPurchaseDateString={firstPurchaseDate.toISOString()}
+            lastPurchaseDateString={lastPurchaseDate.toISOString()}
+          >
+            <BarChart
+              data={graphsData.walletsBreakdownBarData}
+              options={graphsData.walletsBreakdownBarOptions}
+            />
+          </ChartFilter>
         </GraphCard>
-      </div>
+      </div> */}
     </div>
   );
 }

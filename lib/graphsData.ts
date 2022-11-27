@@ -97,7 +97,7 @@ type GraphsData = {
   walletTimeTrendsOptions: ChartOptions<"line">;
   walletsBreakdownBarData: ChartData<"bar">;
   walletsBreakdownBarOptions: ChartOptions<"bar">;
-  walletsBreakdownPieData: ChartData<"pie">;
+  walletsBreakdownPieData: ChartData<"pie", { x: string; y: number }[]>;
   walletsBreakdownPieOptions: ChartOptions<"pie">;
   zeroConfBreakdownData: ChartData<"pie">;
   zeroConfBreakdownOptions: ChartOptions<"pie">;
@@ -123,6 +123,11 @@ export const graphsData: GraphsData = {
   walletTimeTrendsOptions: {
     responsive: true,
     maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "bottom",
+      },
+    },
     elements: {
       line: {
         tension: 0.5,
@@ -155,7 +160,7 @@ export const graphsData: GraphsData = {
             wallets.filter((wallet) => wallet === currentWallet).length
         ),
         backgroundColor: uniqueWallets.map((_, i) => colors[i]),
-        borderColor: "#fff", //uniqueWallets.map((_, i) => colors[i]),
+        borderColor: "#fff",
         borderWidth: 1,
       },
     ],
@@ -197,18 +202,15 @@ export const graphsData: GraphsData = {
   },
   walletsBreakdownPieData: {
     labels: uniqueWallets,
-    datasets: [
-      {
-        data: uniqueWallets.map((currentWallet) =>
-          Math.round(
-            (purchasesByWallet[currentWallet].length / purchases.length) * 100
-          )
-        ),
-        backgroundColor: uniqueWallets.map((_, i) => colors[i]),
-        borderColor: "#fff",
-        borderWidth: 1,
-      },
-    ],
+    datasets: uniqueWallets.map((wallet, walletIndex) => ({
+      data: purchasesByWallet[wallet].map((p) => ({
+        x: p.created_time,
+        y: 1,
+      })),
+      backgroundColor: colors[walletIndex],
+      borderColor: "#fff",
+      borderWidth: 1,
+    })),
   },
   walletsBreakdownPieOptions: {
     responsive: true,
