@@ -13,9 +13,9 @@ export default function RootLayout({
           className="relative bg-gradient-to-b from-primary to-secondary"
           data-theme="dark"
         >
-          <div className="absolute bottom-0 overflow-hidden max-w-full opacity-30">
+          <div className="absolute bottom-0 overflow-hidden w-full opacity-30">
             <svg
-              className="fill-secondary"
+              className="fill-secondary w-full h-auto"
               width="1600"
               height="595"
               viewBox="0 0 1600 595"
