@@ -2,17 +2,29 @@
 import { ChartData, ChartOptions } from "chart.js";
 import "chart.js/auto";
 import "chartjs-adapter-date-fns";
+import clsx from "clsx";
+import {
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+} from "date-fns";
+import { convertDate, groupData, padEmpty } from "lib/lineChartDataUtils";
+import merge from "lodash.merge";
 import React from "react";
 import { Line } from "react-chartjs-2";
 import { DateRangePicker, Range, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import { TimeFormat, timeFormats } from "types/TimeFormat";
 
 type LineChartProps = {
   data: ChartData<"line", { x: string; y: number }[]>;
   options: ChartOptions<"line">;
-  startDateString: string;
-  endDateString: string;
+  firstPurchaseDateString: string;
+  lastPurchaseDateString: string;
 };
 
 const rangePickerKey = "selection";
@@ -20,23 +32,73 @@ const rangePickerKey = "selection";
 export function LineChart({
   data,
   options,
-  startDateString,
-  endDateString,
+  firstPurchaseDateString,
+  lastPurchaseDateString,
 }: LineChartProps) {
+  const [timeFormat, setTimeFormat] = React.useState<TimeFormat>("week");
+
+  const firstPurchaseDate = React.useMemo(
+    () => new Date(firstPurchaseDateString),
+    [firstPurchaseDateString]
+  );
+  const lastPurchaseDate = React.useMemo(
+    () => new Date(lastPurchaseDateString),
+    [lastPurchaseDateString]
+  );
+
+  const startDate = React.useMemo(
+    () =>
+      timeFormat === "day"
+        ? startOfDay(firstPurchaseDate)
+        : timeFormat === "week"
+        ? startOfWeek(firstPurchaseDate)
+        : startOfMonth(firstPurchaseDate),
+    [firstPurchaseDate, timeFormat]
+  );
+  const endDate = React.useMemo(
+    () =>
+      timeFormat === "day"
+        ? endOfDay(lastPurchaseDate)
+        : timeFormat === "week"
+        ? endOfWeek(lastPurchaseDate)
+        : endOfMonth(lastPurchaseDate),
+    [lastPurchaseDate, timeFormat]
+  );
+
   const [rangePickerOpen, setRangePickerOpen] = React.useState(false);
   const [selectionRange, setSelectionRange] = React.useState<Range>({
-    startDate: new Date(startDateString),
-    endDate: new Date(endDateString),
+    startDate,
+    endDate,
     key: rangePickerKey,
   });
   const handleSelect = React.useCallback((ranges: RangeKeyDict) => {
     setSelectionRange(ranges[rangePickerKey]);
   }, []);
 
-  const rangeData = React.useMemo(
+  const groupedData = React.useMemo(
     () => ({
       ...data,
-      datasets: data.datasets.map((dataset) => ({
+      datasets: data.datasets.map((set) => ({
+        ...set,
+        data: convertDate(
+          groupData(
+            padEmpty(
+              firstPurchaseDate,
+              lastPurchaseDate,
+              set.data.map((d) => ({ ...d, x: new Date(d.x) }))
+            ),
+            timeFormat
+          )
+        ),
+      })),
+    }),
+    [data, firstPurchaseDate, lastPurchaseDate, timeFormat]
+  );
+
+  const rangeData = React.useMemo(
+    () => ({
+      ...groupedData,
+      datasets: groupedData.datasets.map((dataset) => ({
         ...dataset,
         data: dataset.data.filter((v) => {
           if (!selectionRange.startDate || !selectionRange.endDate) {
@@ -51,13 +113,52 @@ export function LineChart({
         }),
       })),
     }),
-    [data, selectionRange]
+    [groupedData, selectionRange]
+  );
+
+  const extendedOptions = React.useMemo(
+    () =>
+      merge({}, options, {
+        scales: {
+          yAxis: {
+            max: Math.max(
+              ...([] as number[]).concat(
+                ...rangeData.datasets.map((dataset) =>
+                  dataset.data.map((datapoint) => datapoint.y)
+                )
+              )
+            ),
+          },
+          xAxis: {
+            time: {
+              unit: timeFormat,
+            },
+          },
+        },
+      }),
+    [rangeData.datasets, options, timeFormat]
   );
 
   return (
     <div className="relative w-full h-full">
       {rangePickerOpen && (
-        <div className="absolute top-0 right-0 bg-secondary p-16 rounded-lg">
+        <div className="absolute top-0 right-0 bg-secondary p-16 rounded-lg flex flex-col items-start justify-center">
+          <p className="text-primary-content">View by</p>
+          <div className="btn-group mb-4">
+            {timeFormats.map((tab) => (
+              <button
+                key={tab}
+                className={clsx(
+                  "btn btn-sm capitalize",
+                  tab === timeFormat && "btn-active"
+                )}
+                onClick={() => setTimeFormat(tab)}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+          <p className="text-primary-content">Date range</p>
           <DateRangePicker
             ranges={[selectionRange]}
             onChange={handleSelect}
@@ -95,7 +196,7 @@ export function LineChart({
           </svg>
         </label>
       </div>
-      <Line data={rangeData} options={options} />
+      <Line data={rangeData} options={extendedOptions} />
     </div>
   );
 }

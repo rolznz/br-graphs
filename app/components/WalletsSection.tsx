@@ -1,4 +1,3 @@
-import { TimeFormatPicker } from "app/components/TimeFormatPicker";
 import { WalletsBreakdownData } from "app/components/WalletsBreakdownData";
 import { WalletsTabGroup } from "app/components/WalletsTabGroup";
 import { WalletTab } from "app/components/WalletTab";
@@ -21,14 +20,10 @@ export function WalletsSection() {
       </div>
       <div className="w-full px-4 flex flex-col items-center">
         <WalletsTabGroup>
-          <WalletTab description="The below chart shows which wallets users made purchases with, and how user preferences have changed over time">
-            <TimeFormatPicker>
-              <WalletTrendsData timeFormat="day" />
-              <WalletTrendsData timeFormat="week" />
-              <WalletTrendsData timeFormat="month" />
-            </TimeFormatPicker>
+          <WalletTab description="The below chart shows which wallets users made purchases with, and how user preferences have changed over time.">
+            <WalletTrendsData />
           </WalletTab>
-          <WalletTab description="The below charts show the popularity of different wallets, based on how many purchases were made per wallet">
+          <WalletTab description="The below charts show the popularity of different wallets, based on how many purchases were made per wallet.">
             <WalletsBreakdownData />
           </WalletTab>
         </WalletsTabGroup>

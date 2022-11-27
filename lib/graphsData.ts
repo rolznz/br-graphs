@@ -93,7 +93,7 @@ const onChainPurchases = purchases.filter(
 console.log("Loaded z-conf and onchain transactions", getTimeElapsed());
 
 type GraphsData = {
-  walletTimeTrendsData: ChartData<"line", { x: Date; y: number }[]>;
+  walletTimeTrendsData: ChartData<"line", { x: string; y: number }[]>;
   walletTimeTrendsOptions: ChartOptions<"line">;
   walletsBreakdownBarData: ChartData<"bar">;
   walletsBreakdownBarOptions: ChartOptions<"bar">;
@@ -113,7 +113,7 @@ export const graphsData: GraphsData = {
       type: "line",
       label: wallet,
       data: purchasesByWallet[wallet].map((p) => ({
-        x: new Date(p.created_time),
+        x: p.created_time,
         y: 1,
       })),
       backgroundColor: colors[walletIndex] + "33",
