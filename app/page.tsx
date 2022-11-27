@@ -6,9 +6,6 @@ export default function Page() {
   return (
     <>
       <WalletsSection />
-      {/* <div data-theme="cupcake">
-        <Graphs />
-      </div> */}
     </>
   );
 }
