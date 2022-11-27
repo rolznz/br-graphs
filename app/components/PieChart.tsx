@@ -23,7 +23,7 @@ export function PieChart({ data, options, formatPercent }: PieChartProps) {
   const extendedOptions = React.useMemo(
     () =>
       formatPercent
-        ? merge(options, {
+        ? merge({}, options, {
             plugins: formatPercentPlugins,
           })
         : options,

@@ -19,8 +19,9 @@ export const sortedPurchaseDates = purchases
   .map((purchase) => new Date(purchase.created_time))
   .sort((a, b) => a.getTime() - b.getTime());
 
-export const firstPurchase = sortedPurchaseDates[0];
-export const lastPurchase = sortedPurchaseDates[sortedPurchaseDates.length - 1];
+export const firstPurchaseDate = sortedPurchaseDates[0];
+export const lastPurchaseDate =
+  sortedPurchaseDates[sortedPurchaseDates.length - 1];
 
 console.log("Sample size: " + purchases.length, getTimeElapsed());
 
@@ -115,8 +116,8 @@ export const graphsData: GraphsData = {
         x: new Date(p.created_time),
         y: 1,
       })),
-      backgroundColor: colors[walletIndex],
-      borderColor: colors[walletIndex] + "CC",
+      backgroundColor: colors[walletIndex] + "33",
+      borderColor: colors[walletIndex],
     })),
   },
   walletTimeTrendsOptions: {
@@ -125,6 +126,7 @@ export const graphsData: GraphsData = {
     elements: {
       line: {
         tension: 0.5,
+        fill: true,
       },
     },
     scales: {

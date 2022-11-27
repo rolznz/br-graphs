@@ -1,6 +1,18 @@
 import { GraphCard } from "app/components/GraphCard";
 import { LineChart } from "app/components/LineChart";
-import { graphsData } from "lib/graphsData";
+import {
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+} from "date-fns";
+import {
+  firstPurchaseDate,
+  graphsData,
+  lastPurchaseDate,
+} from "lib/graphsData";
 import { convertDate, groupData, padEmpty } from "lib/lineChartDataUtils";
 import merge from "lodash.merge";
 import { TimeFormatProps } from "types/TimeFormat";
@@ -18,12 +30,27 @@ export function WalletTrendsData({
     })),
   };
 
+  const startDate =
+    timeFormat === "day"
+      ? startOfDay(firstPurchaseDate)
+      : timeFormat === "week"
+      ? startOfWeek(firstPurchaseDate)
+      : startOfMonth(firstPurchaseDate);
+  const endDate =
+    timeFormat === "day"
+      ? endOfDay(lastPurchaseDate)
+      : timeFormat === "week"
+      ? endOfWeek(lastPurchaseDate)
+      : endOfMonth(lastPurchaseDate);
+
   return (
     <div className="w-full">
       <GraphCard>
-        <LineChart<{ x: string; y: number }[]>
+        <LineChart
+          startDateString={startDate.toISOString()}
+          endDateString={endDate.toISOString()}
           data={groupedData}
-          options={merge(graphsData.walletTimeTrendsOptions, {
+          options={merge({}, graphsData.walletTimeTrendsOptions, {
             scales: {
               yAxis: {
                 max: Math.max(

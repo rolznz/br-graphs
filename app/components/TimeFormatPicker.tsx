@@ -12,7 +12,7 @@ export function TimeFormatPicker({ children }: React.PropsWithChildren) {
           <button
             key={tab}
             className={clsx(
-              "btn capitalize",
+              "btn btn-sm capitalize",
               tab === timeFormat && "btn-active"
             )}
             onClick={() => setTimeFormat(tab)}

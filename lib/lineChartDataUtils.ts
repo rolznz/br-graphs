@@ -1,5 +1,5 @@
 import { add, startOfDay, startOfMonth, startOfWeek } from "date-fns";
-import { firstPurchase, lastPurchase } from "lib/graphsData";
+import { firstPurchaseDate, lastPurchaseDate } from "lib/graphsData";
 import groupBy from "lodash.groupby";
 import { TimeFormat } from "types/TimeFormat";
 
@@ -25,8 +25,8 @@ export const groupData = (
 
 export const padEmpty = (data: { x: Date; y: number }[]) => {
   for (
-    let date = startOfDay(firstPurchase);
-    date < startOfDay(lastPurchase);
+    let date = startOfDay(firstPurchaseDate);
+    date < startOfDay(lastPurchaseDate);
     date = add(date, { days: 1 })
   ) {
     if (!data.some((entry) => entry.x.getTime() === date.getTime())) {
