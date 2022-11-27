@@ -12,6 +12,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.13",
     "chart.js": "^3.9.1",
     "chartjs-adapter-date-fns": "^2.0.1",
     "clsx": "^1.2.1",
