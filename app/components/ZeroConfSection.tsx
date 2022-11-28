@@ -9,7 +9,7 @@ const walletTabs = ["trends", "breakdown"] as const;
 
 export function ZeroConfSection() {
   return (
-    <Section title="Zero Conf vs Onchain Transactions" className="bg-zinc-400">
+    <Section title="Zero Conf vs On-Chain Transactions" className="bg-zinc-400">
       <TabGroup tabs={walletTabs} initialTab="trends">
         <Tab description="The below chart shows how purchases were confirmed, and how confirmation type usage has changed over time.">
           <Trends data={graphData.zeroConfTrendsData} />

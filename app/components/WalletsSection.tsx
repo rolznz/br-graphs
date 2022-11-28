@@ -19,7 +19,7 @@ export function WalletsSection() {
         </Tab>
         <Tab
           showUnknownWarning
-          description="The below chart shows the popularity of different wallets, based on how many purchases were made per wallet."
+          description="The below chart shows the popularity of wallets used to make purchases."
         >
           <Breakdown data={graphData.walletsBreakdownData} />
         </Tab>

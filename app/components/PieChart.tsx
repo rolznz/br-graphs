@@ -31,7 +31,7 @@ const defaultPieChartOptions: ChartOptions<"pie"> = {
           return [
             tooltipItem.label,
             tooltipItem.raw +
-              " (" +
+              " purchases (" +
               Math.round(((tooltipItem.raw as number) * 100) / totalAmount) +
               "%)",
           ];

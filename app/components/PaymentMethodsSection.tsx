@@ -14,7 +14,7 @@ export function PaymentMethodsSection() {
         <Tab description="The below chart shows which currency users made purchases with, and how user preferences have changed over time.">
           <Trends data={graphData.paymentMethodTrendsData} />
         </Tab>
-        <Tab description="The below chart shows the popularity of different currencies, based on how many purchases were made per currency.">
+        <Tab description="The below chart shows the popularity of different currencies used to make purchases.">
           <Breakdown data={graphData.paymentMethodsBreakdownData} />
         </Tab>
       </TabGroup>
