@@ -60,7 +60,7 @@ const onChainPurchases = purchases.filter(
   (purchase) => (purchase.time_to_onchain_conf ?? 0) > 0
 );
 
-const uniqueConfTypes = ["Zero Conf", "On-Chain Transactions"];
+const uniqueConfTypes = ["Zero Conf", "On-Chain"];
 const purchasesByConfType = {
   [uniqueConfTypes[0]]: zeroConfPurchases,
   [uniqueConfTypes[1]]: onChainPurchases,
