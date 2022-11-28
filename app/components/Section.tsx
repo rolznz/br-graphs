@@ -1,17 +1,21 @@
+import clsx from "clsx";
+
 type SectionProps = {
-  theme: string;
   title: string;
+  className: string;
 };
 
 export function Section({
-  theme,
   title,
   children,
+  className,
 }: React.PropsWithChildren<SectionProps>) {
   return (
     <div
-      data-theme={theme}
-      className="bg-gradient-to-b from-base-100 to-base-300 min-h-screen flex flex-col items-center pb-8"
+      className={clsx(
+        "min-h-screen flex flex-col items-center pb-8",
+        className
+      )}
     >
       <div className="hero">
         <div className="hero-content pt-16 pb-4 text-center">

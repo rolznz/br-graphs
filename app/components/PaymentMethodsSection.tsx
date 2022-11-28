@@ -9,7 +9,7 @@ const walletTabs = ["trends", "breakdown"] as const;
 
 export function PaymentMethodsSection() {
   return (
-    <Section title="Payment Methods" theme="emerald">
+    <Section title="Payment Methods" className="bg-[#A8A]">
       <TabGroup tabs={walletTabs} initialTab="trends">
         <Tab description="The below chart shows which currency users made purchases with, and how user preferences have changed over time.">
           <Trends data={graphData.paymentMethodTrendsData} />

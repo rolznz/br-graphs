@@ -1,7 +1,7 @@
 "use client";
 import { ChartData, ChartOptions } from "chart.js";
 import "chart.js/auto";
-import { chartFontConfig } from "lib/chartFontConfig";
+import { chartFontConfig, chartTextColor } from "lib/chartFontConfig";
 import { defaultChartFilters } from "lib/defaultChartFilters";
 import { getInRangeData } from "lib/getInRangeData";
 import React from "react";
@@ -16,6 +16,7 @@ const defaultPieChartOptions: ChartOptions<"pie"> = {
     legend: {
       labels: {
         font: chartFontConfig,
+        color: chartTextColor,
       },
       position: "left",
       reverse: true, // zero conf
@@ -59,9 +60,7 @@ export function PieChart({
           dataset.data.map((item) => ({ ...item, x: new Date(item.x) })),
           filters.startDate,
           filters.endDate
-        )
-          .map((item) => item.y)
-          .reduce((a, b) => a + b, 0),
+        ),
       })),
     }),
     [data, filters]
@@ -72,7 +71,9 @@ export function PieChart({
       labels: rangeData.labels,
       datasets: [
         {
-          data: rangeData.datasets.map((dataset) => dataset.data),
+          data: rangeData.datasets.map((dataset) =>
+            dataset.data.map((item) => item.y).reduce((a, b) => a + b, 0)
+          ),
           backgroundColor: rangeData.datasets.map(
             (dataset) => dataset.backgroundColor as string
           ),

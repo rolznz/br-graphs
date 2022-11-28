@@ -9,7 +9,7 @@ const walletTabs = ["trends", "breakdown"] as const;
 
 export function WalletsSection() {
   return (
-    <Section title="User Wallets" theme="retro">
+    <Section title="User Wallets" className="bg-[#88A]">
       <TabGroup tabs={walletTabs} initialTab="trends">
         <Tab
           showUnknownWarning

@@ -108,7 +108,8 @@ export function ChartFilter({
   return (
     <div className="relative w-full h-full flex flex-col justify-start items-center gap-4">
       {filterMenuOpen && (
-        <div className="absolute -top-20 -right-4 bg-secondary p-16 py-4 max-sm:p-4 rounded-lg flex flex-col items-start justify-center z-10">
+        <div className="absolute -top-20 -right-4 p-16 py-4 max-sm:p-4 rounded-lg flex flex-col items-start justify-center z-10 overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full bg-slate-400 opacity-70 -z-10" />
           {showTimeFormat && (
             <>
               <p className="text-primary-content font-bold mb-2">View by</p>
@@ -136,6 +137,7 @@ export function ChartFilter({
             onChange={handleChangeDateRange}
             staticRanges={[]}
             inputRanges={[]}
+            className="rounded-lg overflow-hidden"
           />
           <div className="divider" />
           <div className="w-full flex justify-end">

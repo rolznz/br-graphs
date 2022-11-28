@@ -2,7 +2,7 @@
 import { ChartData, ChartOptions } from "chart.js";
 import "chart.js/auto";
 import "chartjs-adapter-date-fns";
-import { chartFontConfig } from "lib/chartFontConfig";
+import { chartFontConfig, chartTextColor } from "lib/chartFontConfig";
 import { defaultChartFilters } from "lib/defaultChartFilters";
 import { getInRangeData } from "lib/getInRangeData";
 import { groupData } from "lib/groupData";
@@ -21,6 +21,7 @@ const defaultLineChartOptions: ChartOptions<"line"> = {
       position: "bottom",
       labels: {
         font: chartFontConfig,
+        color: chartTextColor,
       },
     },
   },
@@ -36,10 +37,24 @@ const defaultLineChartOptions: ChartOptions<"line"> = {
         display: true,
         text: "Number of purchases",
         font: chartFontConfig,
+        color: chartTextColor,
+      },
+      ticks: {
+        color: chartTextColor,
+        font: chartFontConfig,
       },
     },
     xAxis: {
       type: "time",
+      ticks: {
+        color: chartTextColor,
+        font: chartFontConfig,
+      },
+      time: {
+        displayFormats: {
+          week: "d MMM",
+        },
+      },
     },
   },
 };
