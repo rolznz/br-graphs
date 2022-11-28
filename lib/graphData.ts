@@ -9,6 +9,7 @@ const startTime = Date.now();
 const getTimeElapsed = () => (Date.now() - startTime) / 1000 + "s";
 
 export const purchases = sampleData.rows as Purchase[];
+
 export const sortedPurchaseDates = purchases
   .map((purchase) => new Date(purchase.created_time))
   .sort((a, b) => a.getTime() - b.getTime());
@@ -84,5 +85,7 @@ export const graphData = {
     purchasesByConfType
   ),
 };
+
+console.log("Graph data size", JSON.stringify(graphData).length / 1000 + "kb");
 
 console.log("Export", getTimeElapsed());

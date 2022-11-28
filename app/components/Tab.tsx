@@ -13,7 +13,7 @@ export function Tab({
 }: React.PropsWithChildren<TabProps>) {
   return (
     <>
-      <p className="text-primary-content mb-4 text-center">{description}</p>
+      <p className="text-primary-content mb-16 text-center">{description}</p>
       {children}
       {showUnknownWarning && (
         <p className="text-secondary-content my-4 text-xs">

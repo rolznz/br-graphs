@@ -42,8 +42,6 @@ export const padEmpty = (
   return data;
 };
 
-export const convertDate = (data: { x: Date; y: number }[]) => {
-  const sorted = data.sort((a, b) => a.x.getTime() - b.x.getTime());
-
-  return sorted.map((entry) => ({ x: entry.x.toISOString(), y: entry.y }));
+export const sortData = (data: { x: Date; y: number }[]) => {
+  return data.sort((a, b) => a.x.getTime() - b.x.getTime());
 };

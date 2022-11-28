@@ -4,7 +4,7 @@ import "chart.js/auto";
 import "chartjs-adapter-date-fns";
 import { chartFontConfig } from "lib/chartFontConfig";
 import { defaultChartFilters } from "lib/defaultChartFilters";
-import { convertDate, groupData, padEmpty } from "lib/lineChartDataUtils";
+import { groupData, sortData } from "lib/lineChartDataUtils";
 import merge from "lodash.merge";
 import React from "react";
 import { Line } from "react-chartjs-2";
@@ -45,44 +45,27 @@ const defaultLineChartOptions: ChartOptions<"line"> = {
 type LineChartProps = {
   data: ChartData<"line", ChartDataArray>;
   title?: string;
-  firstPurchaseDateString: string;
-  lastPurchaseDateString: string;
   filters?: ChartFilters;
 };
 
 export function LineChart({
   data,
-  firstPurchaseDateString,
-  lastPurchaseDateString,
   filters = defaultChartFilters,
 }: LineChartProps) {
-  const firstPurchaseDate = React.useMemo(
-    () => new Date(firstPurchaseDateString),
-    [firstPurchaseDateString]
-  );
-  const lastPurchaseDate = React.useMemo(
-    () => new Date(lastPurchaseDateString),
-    [lastPurchaseDateString]
-  );
-
   const groupedData = React.useMemo(
     () => ({
       ...data,
       datasets: data.datasets.map((set) => ({
         ...set,
-        data: convertDate(
+        data: sortData(
           groupData(
-            padEmpty(
-              firstPurchaseDate,
-              lastPurchaseDate,
-              set.data.map((d) => ({ ...d, x: new Date(d.x) }))
-            ),
+            set.data.map((d) => ({ ...d, x: new Date(d.x) })),
             filters.timeFormat
           )
-        ),
+        ).map((entry) => ({ x: entry.x.toISOString(), y: entry.y })),
       })),
     }),
-    [data, firstPurchaseDate, lastPurchaseDate, filters]
+    [data, filters]
   );
 
   const rangeData = React.useMemo(

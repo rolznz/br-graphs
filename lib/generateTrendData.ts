@@ -1,5 +1,7 @@
 import { ChartData } from "chart.js";
 import { colors } from "lib/colors";
+import { firstPurchaseDate, lastPurchaseDate } from "lib/graphData";
+import { groupData, padEmpty } from "lib/lineChartDataUtils";
 import { ChartDataArray } from "types/ChartDataArray";
 import { Purchase } from "types/Purchase";
 
@@ -10,10 +12,17 @@ export const generateTrendData = (
   datasets: uniqueEntities.map((entity, entityIndex) => ({
     type: "line",
     label: entity,
-    data: purchasesByEntity[entity].map((p) => ({
-      x: new Date(p.created_time).getTime(),
-      y: 1,
-    })),
+    data: groupData(
+      padEmpty(
+        firstPurchaseDate,
+        lastPurchaseDate,
+        purchasesByEntity[entity].map((p) => ({
+          x: new Date(p.created_time),
+          y: 1,
+        }))
+      ),
+      "day"
+    ).map((item) => ({ ...item, x: item.x.getTime() })),
     backgroundColor: colors[entityIndex] + "33",
     borderColor: colors[entityIndex],
   })),

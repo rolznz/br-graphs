@@ -1,1 +1,4 @@
-export type ChartDataArray = { x: number; y: number }[];
+type DateTimeMs = number;
+type Quantity = number;
+
+export type ChartDataArray = { x: DateTimeMs; y: Quantity }[];

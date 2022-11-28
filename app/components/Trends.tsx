@@ -18,11 +18,7 @@ export function Trends({ data }: TrendsProps) {
           lastPurchaseDateString={lastPurchaseDate.toISOString()}
           showTimeFormat
         >
-          <LineChart
-            firstPurchaseDateString={firstPurchaseDate.toISOString()}
-            lastPurchaseDateString={lastPurchaseDate.toISOString()}
-            data={data}
-          />
+          <LineChart data={data} />
         </ChartFilter>
       </GraphCard>
     </div>

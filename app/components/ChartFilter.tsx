@@ -108,7 +108,7 @@ export function ChartFilter({
   return (
     <div className="relative w-full h-full flex flex-col justify-start items-center gap-4">
       {filterMenuOpen && (
-        <div className="absolute top-0 right-0 bg-secondary p-16 py-4 max-sm:p-4 rounded-lg flex flex-col items-start justify-center">
+        <div className="absolute -top-20 -right-4 bg-secondary p-16 py-4 max-sm:p-4 rounded-lg flex flex-col items-start justify-center z-10">
           {showTimeFormat && (
             <>
               <p className="text-primary-content font-bold mb-2">View by</p>
@@ -145,7 +145,7 @@ export function ChartFilter({
           </div>
         </div>
       )}
-      <div className="absolute top-0 right-0 p-4">
+      <div className="absolute -top-16 right-0 z-20">
         <label className="btn btn-circle swap swap-rotate">
           <input
             type="checkbox"
@@ -159,8 +159,8 @@ export function ChartFilter({
         </label>
       </div>
       <h3 className="text-primary-content text-sm font-bold absolute -top-6">
-        by {timeFormat} • {formatDate(dateRange.startDate)}-
-        {formatDate(dateRange.endDate, true)}
+        {showTimeFormat && <>by {timeFormat} • </>}
+        {formatDate(dateRange.startDate)}-{formatDate(dateRange.endDate, true)}
       </h3>
       {React.cloneElement(
         children as React.ReactElement<{ filters: ChartFilters }>,
