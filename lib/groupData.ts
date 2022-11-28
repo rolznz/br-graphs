@@ -1,9 +1,10 @@
 import { startOfDay, startOfMonth, startOfWeek } from "date-fns";
 import groupBy from "lodash.groupby";
+import { ChartDataArray } from "types/ChartDataArray";
 import { TimeFormat } from "types/TimeFormat";
 
 export const groupData = (
-  data: { x: Date; y: number }[],
+  data: ChartDataArray<Date>,
   timeFormat: TimeFormat
 ) => {
   const dateGroupFunction =
@@ -13,7 +14,7 @@ export const groupData = (
       ? startOfWeek
       : startOfMonth;
 
-  const groupedData: { x: Date; y: number }[] = Object.entries(
+  const groupedData: ChartDataArray<Date> = Object.entries(
     groupBy(data, (e) => dateGroupFunction(e.x).getTime())
   ).map((group) => ({
     x: new Date(parseInt(group[0])),

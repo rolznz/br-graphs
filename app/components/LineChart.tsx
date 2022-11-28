@@ -4,6 +4,7 @@ import "chart.js/auto";
 import "chartjs-adapter-date-fns";
 import { chartFontConfig } from "lib/chartFontConfig";
 import { defaultChartFilters } from "lib/defaultChartFilters";
+import { getInRangeData } from "lib/getInRangeData";
 import { groupData } from "lib/groupData";
 import { sortData } from "lib/sortData";
 import merge from "lodash.merge";
@@ -53,38 +54,24 @@ export function LineChart({
   data,
   filters = defaultChartFilters,
 }: LineChartProps) {
-  const groupedData = React.useMemo(
+  const rangeData = React.useMemo(
     () => ({
       ...data,
       datasets: data.datasets.map((set) => ({
         ...set,
         data: sortData(
           groupData(
-            set.data.map((d) => ({ ...d, x: new Date(d.x) })),
+            getInRangeData(
+              set.data.map((item) => ({ ...item, x: new Date(item.x) })),
+              filters.startDate,
+              filters.endDate
+            ),
             filters.timeFormat
           )
         ).map((entry) => ({ x: entry.x.toISOString(), y: entry.y })),
       })),
     }),
     [data, filters]
-  );
-
-  const rangeData = React.useMemo(
-    () => ({
-      ...groupedData,
-      datasets: groupedData.datasets.map((dataset) => ({
-        ...dataset,
-        data: dataset.data.filter((v) => {
-          const inRange =
-            new Date(v.x) >= filters.startDate &&
-            new Date(v.x) <= filters.endDate;
-
-          // console.log("In range", inRange, v.x, selectionRange);
-          return inRange;
-        }),
-      })),
-    }),
-    [groupedData, filters]
   );
 
   const extendedOptions = React.useMemo(

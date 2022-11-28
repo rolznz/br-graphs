@@ -3,6 +3,7 @@ import { ChartData, ChartOptions } from "chart.js";
 import "chart.js/auto";
 import { chartFontConfig } from "lib/chartFontConfig";
 import { defaultChartFilters } from "lib/defaultChartFilters";
+import { getInRangeData } from "lib/getInRangeData";
 import React from "react";
 import { Pie } from "react-chartjs-2";
 import { ChartDataArray } from "types/ChartDataArray";
@@ -54,16 +55,12 @@ export function PieChart({
       ...data,
       datasets: data.datasets.map((dataset) => ({
         ...dataset,
-        data: dataset.data
-          .filter((v) => {
-            const inRange =
-              new Date(v.x) >= filters.startDate &&
-              new Date(v.x) <= filters.endDate;
-
-            // console.log("In range", inRange, v.x, selectionRange);
-            return inRange;
-          })
-          .map((d) => d.y)
+        data: getInRangeData(
+          dataset.data.map((item) => ({ ...item, x: new Date(item.x) })),
+          filters.startDate,
+          filters.endDate
+        )
+          .map((item) => item.y)
           .reduce((a, b) => a + b, 0),
       })),
     }),
