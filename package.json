@@ -25,8 +25,7 @@
     "react-chartjs-2": "^4.3.1",
     "react-countup": "^6.4.0",
     "react-date-range": "^1.4.0",
-    "react-dom": "18.2.0",
-    "react-draggable": "4.4.5"
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@types/lodash.groupby": "^4.6.7",
