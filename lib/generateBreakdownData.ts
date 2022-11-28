@@ -1,6 +1,6 @@
 import { ChartData } from "chart.js";
 import { colors } from "lib/colors";
-import { groupData } from "lib/lineChartDataUtils";
+import { groupData } from "lib/groupData";
 import { ChartDataArray } from "types/ChartDataArray";
 import { Purchase } from "types/Purchase";
 

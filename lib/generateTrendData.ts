@@ -1,7 +1,8 @@
 import { ChartData } from "chart.js";
 import { colors } from "lib/colors";
 import { firstPurchaseDate, lastPurchaseDate } from "lib/graphData";
-import { groupData, padEmpty } from "lib/lineChartDataUtils";
+import { groupData } from "lib/groupData";
+import { padEmpty } from "lib/padEmpty";
 import { ChartDataArray } from "types/ChartDataArray";
 import { Purchase } from "types/Purchase";
 
